@@ -5,7 +5,8 @@
  *                                                      All Rights Reserved
  * *******************************************************************************************************/
 var express = require('express');
-var parser = require('body-parser');
+//
+var bodyParser = require('body-parser');
 var request = require('request');
 
 var app = express();
