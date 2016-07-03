@@ -3,9 +3,6 @@
   "version": "0.5.0",
   "description": "Sir PlayABot is an AI on Messenger that suggests games based on your tastes",
   "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [
     "bot",
     "games",
