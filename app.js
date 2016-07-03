@@ -7,6 +7,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
+var Parse = require('parse').Parse;
 
 var app = express();
 
@@ -22,6 +23,23 @@ app.use(bodyParser.json());
 app.get('/', function(req, res) {
     res.send("Hello world! I'm a bot");
 });
+
+//Parse initialization
+Parse.initialize("kjZOwmHlUZo5MlcBUXWa8kuRY9QLR4p5dx0QztCM", "OgPpv7rshdnqoeo4qsD5HmpszOeCRwFVM3ncuCoN");
+
+var query = new Parse.Query(Parse.User);
+query.find({
+    success: function(users) {
+        for (var i = 0; i < users.length; ++i) {
+            console.log(users[i].get('username'));
+        }
+    },
+    else: function(users){
+        sendTextMessage(sender, "Didn't worked" );
+        console.log("Not working");
+    }
+});
+
 
 // Facebook verification
 app.get('/webhook/', function(req, res){
