@@ -24,23 +24,6 @@ app.get('/', function(req, res) {
     res.send("Hello world! I'm a bot");
 });
 
-//Parse initialization
-Parse.initialize("kjZOwmHlUZo5MlcBUXWa8kuRY9QLR4p5dx0QztCM", "OgPpv7rshdnqoeo4qsD5HmpszOeCRwFVM3ncuCoN");
-
-var query = new Parse.Query(Parse.User);
-query.find({
-    success: function(users) {
-        for (var i = 0; i < users.length; ++i) {
-            console.log(users[i].get('username'));
-        }
-    },
-    else: function(users){
-        sendTextMessage(sender, "Didn't worked" );
-        console.log("Not working");
-    }
-});
-
-
 // Facebook verification
 app.get('/webhook/', function(req, res){
     if(req.query['hub.verify_token'] === 'hello_sir'){
@@ -62,7 +45,15 @@ app.post('/webhook/', function(req, res){
         sender = event.sender.id
         if (event.message && event.message.text) {
             text = event.message.text
+            if (text == 'Generic'){
+                sendGenericMessage(sender);
+                continue;
+            }
+
             sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+        }
+        else if (messagingEvent.postback) {
+            receivedPostback(messagingEvent);
         }
     }
     res.sendStatus(200)
@@ -92,4 +83,69 @@ function sendTextMessage(sender, text) {
             console.log('Error: ', response.body.error)
         }
     })
+}
+
+// Send a structured message
+function sendGenericMessage(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "generic",
+                    elements: [{
+                        title: "rift",
+                        subtitle: "Next-generation virtual reality",
+                        item_url: "https://www.oculus.com/en-us/rift/",
+                        image_url: "http://i.giphy.com/l41YrmTg81L4ds5pK.gif",
+                        buttons: [{
+                            type: "web_url",
+                            url: "https://www.oculus.com/en-us/rift/",
+                            title: "Open Web URL"
+                        }, {
+                            type: "postback",
+                            title: "Call Postback",
+                            payload: "Payload for first bubble",
+                        }],
+                    }, {
+                        title: "touch",
+                        subtitle: "Your Hands, Now in VR",
+                        item_url: "https://www.oculus.com/en-us/touch/",
+                        image_url: "http://messengerdemo.parseapp.com/img/touch.png",
+                        buttons: [{
+                            type: "web_url",
+                            url: "https://www.oculus.com/en-us/touch/",
+                            title: "Open Web URL"
+                        }, {
+                            type: "postback",
+                            title: "Call Postback",
+                            payload: "Payload for second bubble",
+                        }]
+                    }]
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+function receivedPostback(event) {
+    var senderID = event.sender.id;
+    var recipientID = event.recipient.id;
+    var timeOfPostback = event.timestamp;
+
+    // The 'payload' param is a developer-defined field which is set in a postback
+    // button for Structured Messages.
+    var payload = event.postback.payload;
+
+    console.log("Received postback for user %d and page %d with payload '%s' " +
+        "at %d", senderID, recipientID, payload, timeOfPostback);
+
+    // When a postback is called, we'll send a message back to the sender to
+    // let them know it was successful
+    sendTextMessage(senderID, "Postback called");
 }
