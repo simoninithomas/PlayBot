@@ -64,7 +64,7 @@ app.post('/webhook/', function(req, res){
 
 
 // Include Token (not safe like that)
-var token = "EAAO3rk8Qk9oBAKP7wN9kZCisAi9YTwLaQgJApPmc7m0YTsBmcmQiKO1NpBigGh0DAUn3V5IDGvWoQS8VzxXNfHzq4ZCfpvDM78Bf9oCieoZAxK1BkLgXiyZCzcQVKFW5dS5ZABC6GJxmH4GyEY84QQPqTFdBEL8fA4522TWKWNwZDZD"
+var token = "EAAP9L5GThOsBAH9UVJtDh3BaRF5ykaZADlZCJ3OEoxxiujUIepd6MEdYBgSUzsZBfEZCEBf7CQ3TAiYPvwiZBmihrzaHQvzmRfm7GYpGZCkmRjnR78T95iCwLYZCQxUFNtTIZAhmBk3dJ1VO6cEfDKr394C0PpqZBJZCLLNtazL5GhKAZDZD"
 
 // Function that echo back messages
 function sendTextMessage(sender, text) {
