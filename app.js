@@ -45,6 +45,9 @@ app.post('/webhook/', function(req, res){
         sender = event.sender.id
         if (event.message && event.message.text) {
             text = event.message.text
+            if (text == 'hello' || 'hi' || "Hello" || "Hi") {
+                sendTextMessage(sender, "Hello, May I propose you some games based on your tastes?")
+            }
             if (text == 'Generic'){
                 sendGenericMessage(sender);
                 continue;
